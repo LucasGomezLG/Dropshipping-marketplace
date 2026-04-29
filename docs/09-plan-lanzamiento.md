@@ -7,167 +7,113 @@ nav_order: 11
 # 09 — Plan de Lanzamiento (Roadmap Operativo)
 
 > **Documento parte de:** [Plataforma Cotizador + Marketplace + Dropshipping](../README.md)
-> **Versión:** 4.1 — 2026-04-28
+> **Versión:** 4.2 — 2026-04-28 (Refactor: Foco Automatización y Escala)
 > **Audiencia primaria:** founder, Tech Lead, equipo de producto.
 
 ---
 
-## Principio rector
+## Principio rector: "Automatizar lo probado para Escalar lo nuevo"
 
-**Validar antes de construir.** Cada fase tiene un KPI de cierre claro. Si una fase no alcanza su KPI, no se avanza a la siguiente — se itera el producto o se pivota la hipótesis.
+Este roadmap prioriza la **conversión del flujo manual existente (WhatsApp/Autopartes) en un sistema de autoservicio digital**. El objetivo es liberar el tiempo del founder para que actúe como motor de expansión hacia otros rubros, aprovechando su audiencia actual como trampolín.
 
 ---
 
 ## Resumen de Fases
 
-| Fase | Mes | Producto principal | KPIs de cierre |
+| Fase | Mes | Producto principal | Estrategia de Crecimiento |
 |---|---|---|---|
-| **1 — MVP Cotizador + Tienda** | 0-3 | Cotizador Híbrido universal + tienda dropshipping curada + dual mode | ≥20 importaciones particulares + 3 mayoristas/mes |
-| **1.5 — Marketplace Beta** | 3-6 | Marketplace con 20-50 vendedores invitados + comisión 8-12% | GMV ≥$5.000 USD/mes |
-| **2 — Marketplace Abierto + ERP** | 6-12 | Vidriera abierta a inscripciones + ERP de stock + bot WhatsApp | GMV ≥$15.000 USD/mes; ≥30% de vendedores convierten a B2B |
-| **3 — Lotes de Demanda (condicional)** | 12-24 | Worker Python + cola + cache + event sourcing | Fill Rate ≥75%; reducción costo unitario por kilo ≥20% |
+| **1 — Digitalización y Autoservicio** | 0-3 | Cotizador Híbrido + Dropshipping Automático | Migrar audiencia de WhatsApp a la Web; Cross-sell a nuevos rubros. |
+| **2 — Escala B2B (Mayoristas)** | 3-9 | Panel Mayorista + Gestión de Cuentas + Cuenta Corriente | Captar el 88% de la rentabilidad (LTV) del modelo. |
+| **3 — Ecosistema Marketplace** | 9-18 | Vidriera para terceros + Split Payment + ERP Vendedores | Consolidar tráfico y monetizar stock de terceros. |
+| **4 — Optimización Logística (Lotes)** | 18+ | Algoritmo de Bin-packing + Smart Routing | Reducir costos unitarios y maximizar margen neto. |
 
 ---
 
-## Fase 1 — MVP Cotizador + Tienda (mes 0-3)
+## Fase 1 — Digitalización y Autoservicio (mes 0-3)
 
 ### Objetivo
-Validar que el cotizador automatizado realmente convierte y libera el tiempo del founder.
+Eliminar el cuello de botella manual del founder. Convertir el "pedime precio por WhatsApp" en un "cotizá y pagá vos mismo".
 
 ### Producto a construir
-- **Landing pública** con cotizador embebido (Next.js + Vercel).
-- **Cotizador Híbrido** con whitelist conservadora (5-7 categorías iniciales de NCM).
-- **Toggle particular/mayorista** desde el primer touchpoint.
-- **Tienda dropshipping** con catálogo curado de 50-150 SKUs (Airtable + Next.js).
-- **Pagos integrados** (Mercado Pago + Stripe).
-- **Tracking básico** (AfterShip).
+- **Cotizador Híbrido Universal:** Capaz de calcular precios para cualquier link, pero con **Whitelist optimizada** para Autopartes y Herramientas (lo que el founder ya domina).
+- **Dropshipping Automático:** Integración de checkout y confirmación de stock.
+- **Modo Asistido (60 días):** El founder valida las cotizaciones automáticas antes de que se procese el cobro final para calibrar márgenes.
+- **Tienda de "Favoritos":** Catálogo curado de los 100 repuestos/productos más pedidos históricamente.
 
-### Modo asistido
-**Durante los primeros 60 días el cotizador opera en modo asistido:** el cliente ve la cotización inmediata, pero el founder confirma manualmente antes de cobrar. Esto captura errores de calibración antes de quemar margen real. Detalle en [02 — Producto Cotizador](02-producto-cotizador.md).
+### Estrategia de Marketing (Leverage)
+1. **Migración Forzada pero Atractiva:** Ofrecer un pequeño descuento (ej. 3%) si el cliente usa el cotizador web en lugar de WhatsApp.
+2. **Contenido de Expansión:** Usar la marca actual de autos para mostrar cómo el cotizador también sirve para traer un iPad, un set de herramientas o ropa, educando a la audiencia en la versatilidad del sistema.
 
-### Backend operativo
-- Supabase para datos críticos (cotizaciones, pedidos, clientes).
-- Airtable para catálogo curado (mantenimiento ágil).
-- WhatsApp Business API para soporte y notificaciones.
-
-### KPIs de cierre Fase 1
-- ≥20 importaciones particulares + 3 mayoristas/mes.
-- Conversión visita → cotización ≥ 8%.
-- Conversión cotización → compra ≥ 30% (particular), ≥ 50% (mayorista).
-- Margen post-envío promedio ≥ 14%.
-- Tasa de fallback a manual < 35%.
-- Tasa de incidentes aduaneros < 5%.
-
-**Si los KPIs no se alcanzan en 90 días: iterar el producto o pivotar la hipótesis. No avanzar a Fase 1.5.**
+### KPIs de éxito
+- **Tasa de Autoservicio:** > 60% de los pedidos de la audiencia actual migran a la web.
+- **Tiempo Liberado del Founder:** > 15 horas/semana ganadas.
+- **Categorías "Non-Auto":** > 15% del GMV proveniente de rubros ajenos a autopartes.
 
 ---
 
-## Fase 1.5 — Marketplace Beta (mes 3-6)
+## Fase 2 — Escala B2B (Mayoristas) (mes 3-9)
 
 ### Objetivo
-Validar que el marketplace genera tráfico orgánico y convierte vendedores a clientes B2B.
+Institucionalizar el canal de mayoristas, que es el motor de rentabilidad real del proyecto.
 
 ### Producto a construir
-- **Marketplace beta** invitación-only, 20-50 vendedores curados (no abierto al público).
-- **Comisión 8-12%** según categoría.
-- **Split payment** vía Mercado Pago.
-- **Verificación AFIP** padrón al alta del vendedor.
-- **Panel de vendedor** con productos, pedidos, ventas.
-- **Cotizador integrado** en el panel del vendedor (cross-sell automático).
+- **Panel Mayorista:** Flujo dedicado con precios escalonados por volumen.
+- **Módulo de Documentación:** Carga de CUIT y validación AFIP automatizada.
+- **Cuenta Corriente (MVP):** Gestión manual de saldos y créditos para clientes recurrentes de confianza.
+- **Asesor de Cuentas B2B:** Integración de herramientas de soporte prioritario para tickets altos.
 
-### Captación inicial de vendedores
-- Outreach a 100-200 vendedores expulsados o disconformes con ML.
-- Aprovechamiento de la audiencia del founder (autos primero).
-- Garantía de comisión congelada por 6 meses para early adopters.
+### Estrategia de Crecimiento
+- **Outreach Directo:** Contactar a casas de repuestos y distribuidores pequeños que hoy compran a importadores tradicionales.
+- **Plan de Referidos Mayorista:** "Traé a otro negocio y descontá 5% en tu próxima importación".
 
-### KPIs de cierre Fase 1.5
-- GMV marketplace ≥ $5.000 USD/mes.
-- ≥ 20 vendedores activos.
-- Conversión vendedor marketplace → cliente cotizador ≥ 20% (a 60 días).
-- Refund rate < 5%.
-- Tasa de fraude < 1%.
+### KPIs de éxito
+- **Mayoristas Activos:** ≥ 10 clientes con frecuencia mensual.
+- **LTV/CAC B2B:** ≥ 5×.
+- **GMV B2B:** > 60% del volumen total de la plataforma.
 
 ---
 
-## Fase 2 — Marketplace Abierto + ERP (mes 6-12)
+## Fase 3 — Ecosistema Marketplace (mes 9-18)
 
 ### Objetivo
-Escalar el marketplace a tráfico abierto y consolidar el lock-in B2B.
+Abrir la plataforma a stock de terceros para generar ingresos pasivos (comisiones) y aumentar la oferta sin riesgo de inventario.
 
 ### Producto a construir
-- **Marketplace abierto** a inscripciones públicas.
-- **ERP de stock genérico** para vendedores (Supabase + Next.js).
-- **Bot de WhatsApp** para gestión rápida de inventario.
-- **Sello "Importador Verificado"** automatizado.
-- **Sistema de microcréditos B2B** (escrutinio basado en historial de actividad).
-- **Migración del catálogo curado** de Airtable a Postgres.
-- **Cache Redis** para cotizaciones y catálogo.
-- **Observabilidad completa** (Sentry + BetterStack).
-- **Webservice padrón AFIP** integrado para validación automática.
+- **Panel de Vendedor Externo:** Carga de productos locales, gestión de ventas.
+- **Split Payment:** Cobro automático de comisión (8-12%) vía Mercado Pago / pasarelas.
+- **ERP Básico:** Herramientas para que el vendedor gestione su stock local y lo reponga vía el Cotizador integrado.
 
-### Equipo Fase 2
-- **Sumar B2B Manager** ($600-1.200 USD/mes) para gestión de cuenta de mayoristas.
-- Founder transiciona de "atender mayoristas" a "expansión de canal B2B" (eventos, alianzas).
-
-### KPIs de cierre Fase 2
-- GMV marketplace ≥ $15.000 USD/mes.
-- ≥ 50 vendedores activos.
-- ≥ 30% de vendedores convierten a B2B (clientes del cotizador).
-- ≥ 10 mayoristas activos con frecuencia ≥ 3/año.
-- Margen post-envío promedio ≥ 14% sostenido.
-- Tasa de fallback a manual < 25%.
-- LTV/CAC ≥ 3× sostenido.
+### Estrategia de Crecimiento
+- **Vendedores "Maker":** Captar emprendedores locales que producen o importan a pequeña escala y necesitan una vidriera con comisión más baja que ML.
 
 ---
 
-## Fase 3 — Lotes de Demanda (mes 12-24, condicional)
+## Fase 4 — Optimización Logística (mes 18+)
 
 ### Objetivo
-Optimizar el margen de flete consolidando pedidos en lotes virtuales.
+Maximizar el margen neto mediante la eficiencia algorítmica.
 
 ### Producto a construir
-- **Worker Python** (FastAPI + OR-Tools) para optimización bin-packing multi-dimensional.
-- **Cola / orquestador** (Inngest, Trigger.dev o Temporal).
-- **State machine** para ciclo de vida del lote (días-semanas).
-- **Event sourcing inmutable** completo para auditoría aduanera.
-- **Smart Routing dinámico** entre rutas (Miami / Shanghai / SP).
-
-### Cuándo lanzar
-**Esta fase es condicional.** Solo se construye si:
-- El volumen de pedidos por categoría justifica consolidación (≥ 100 pedidos/mes en una ruta).
-- Hay evidencia clara de que la consolidación reduce el costo unitario por kilo en ≥ 15%.
-- El equipo tiene la capacidad operativa para soportar otro frente.
-
-### KPIs de cierre Fase 3
-- Fill Rate de lotes consolidados ≥ 75%.
-- Reducción del costo unitario por kilo ≥ 20%.
-- Tasa de incidentes aduaneros en lotes consolidados < 3%.
+- **Lotes de Demanda:** Algoritmo de consolidación para llenar contenedores/pallets virtuales y bajar el costo del kilo de flete.
+- **Smart Routing:** Elección automática de la ruta (Miami vs China vs SP) según aranceles y tiempos de aduana en tiempo real.
 
 ---
 
-## Compromisos clave del plan (no negociables)
+## Ajuste de Compromisos Clave (V4.2)
 
-1. **Modo asistido los primeros 60 días** del cotizador automático.
-2. **Whitelist conservadora** al inicio (5-7 categorías de NCM); expansión gradual mes a mes con datos de margen.
-3. **Plan B2B explícito desde el día 1** ([13 — Adquisición de Mayoristas](13-adquisicion-mayoristas.md)).
-4. **Aprovechar la audiencia de autos** como canal de entrada del cotizador (CAC orgánico real, no hipotético).
-5. **Asesor aduanero medio tiempo desde el día 1** (no opcional).
-6. **No saltarse fases.** Cada fase debe cumplir KPIs antes de avanzar.
+1. **La automatización no es opcional:** Si un flujo puede ser automático, se automatiza. El founder no debe tocar cotizaciones de bajo ticket después de los 60 días de calibración.
+2. **La audiencia de autos es el motor, no el destino:** Se usa para validar el software, pero el sistema debe nacer universal.
+3. **Foco en el Margen, no en el Volumen:** Preferimos 5 importaciones mayoristas exitosas que 500 particulares con problemas aduaneros.
 
 ---
 
-## Riesgos del plan
+## Riesgos Refactorizados
 
-- **Atraso de Fase 1.5 (Marketplace Beta):** probable atraso de 2-3 meses respecto al plan original (es un producto nuevo). Mitigación: empezar el outreach a vendedores en paralelo a Fase 1.
-- **Sobre-construcción en Fase 2:** ERP + bot + microcréditos + AFIP + cache es mucho. Mitigación: priorizar ERP y bot; microcréditos pueden esperar a Fase 3.
-- **Tentación de saltar al marketplace abierto antes de cumplir KPIs Fase 1.5:** mitigación clara — validar antes de abrir.
-
-Detalle de riesgos en [10 — Riesgos y Mitigaciones](10-riesgos-y-mitigaciones.md).
+1. **Ansiedad por el Marketplace:** Querer lanzar la Fase 3 antes de que la Fase 1 esté 100% automatizada. *Mitigación:* Disciplina de KPI.
+2. **Dilución de Marca:** Que la audiencia de autos no entienda por qué ahora vendemos de todo. *Mitigación:* Storytelling claro — "Traemos lo que necesites para tu taller... y para tu vida".
 
 ---
 
 ## Próximas lecturas
-
-- [02 — Producto Cotizador](02-producto-cotizador.md): detalle del componente principal de Fase 1.
-- [11 — Equipo y Operaciones](11-equipo-y-operaciones.md): roles por fase.
-- [13 — Adquisición de Mayoristas](13-adquisicion-mayoristas.md): plan paralelo al roadmap.
+- [08 — Finanzas](08-finanzas-unit-economics.md): Cómo este cambio impacta el break-even.
+- [13 — Adquisición de Mayoristas](13-adquisicion-mayoristas.md): El plan táctico para la Fase 2.

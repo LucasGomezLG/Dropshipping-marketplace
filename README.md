@@ -83,7 +83,8 @@ Leer en orden 00 → 13.
 | 2.0 | corrección financiera | Marketplace 0% comisión + SaaS Freemium + Cotizador Híbrido. Viable pero ICP horizontal sin foco. |
 | 3.0 | pivot estratégico | Wedge solo-autos + curso onboarding pago. Bootstrappable pero scope estrecho. |
 | 4.0 | visión del founder | Cotizador universal + tienda + marketplace 8-12% con dual mode particular/mayorista. |
-| **4.1** | **2026-04-28** | **Refactor a documentos modulares + agregado del plan de adquisición B2B (`13-adquisicion-mayoristas.md`).** |
+| 4.1 | 2026-04-28 | Refactor a documentos modulares + agregado del plan de adquisición B2B. |
+| **4.2** | **2026-04-28** | **Refactor Roadmap: Foco radical en automatización de flujo manual y escala de audiencia (Autos → Universal).** |
 
 ---
 
