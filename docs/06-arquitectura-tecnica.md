@@ -4,219 +4,91 @@ title: "Arquitectura Técnica"
 nav_order: 8
 ---
 
-# 06 — Arquitectura Técnica
+# 06 — Arquitectura Técnica (Stack Definitivo)
 
 > **Documento parte de:** [Plataforma Cotizador + Marketplace + Dropshipping](../README.md)
-> **Versión:** 4.1 — 2026-04-28
-> **Audiencia primaria:** Tech Lead, desarrolladores, asesores técnicos.
+> **Versión:** 4.3 — 2026-04-28 (Refactor: Stack Serverless Optimizado)
+> **Audiencia primaria:** Tech Lead, desarrolladores, inversores.
 
 ---
 
-## Principio rector
+## Principio rector: "Escalabilidad Serverless con Foco en el Margen"
 
-**Stack escalonado:** la infraestructura se complejiza solo cuando la demanda lo justifica. Empezamos minimalista y agregamos componentes cuando hay datos que respaldan el costo.
-
-No construimos para una escala que no existe todavía. Pero diseñamos los modelos de datos pensando en la escala futura para no reescribir cuando llegue.
+El stack elegido prioriza la **velocidad de desarrollo** y el **costo operativo $0 inicial**, sin sacrificar la robustez necesaria para manejar transacciones financieras y trámites aduaneros. Se opta por una arquitectura **Full-stack Serverless**.
 
 ---
 
-## Stack Fase 1 (MVP — meses 0-6)
+## 1. El Stack Core (La Santísima Trinidad)
 
-### Frontend
-- **Next.js** sobre **Vercel**.
-- ISR + CDN para catálogo público.
-- SSR para páginas autenticadas (panel del cliente, panel del vendedor).
-- Páginas: landing pública, cotizador, tienda dropshipping, marketplace beta, panel cliente, panel vendedor, panel admin.
+### Frontend: Next.js (App Router) + TypeScript
+- **TypeScript (Mandatorio):** No se acepta JavaScript puro. Al manejar cálculos de aranceles, impuestos y dinero, la seguridad de tipos es crítica para evitar errores catastróficos.
+- **App Router:** Uso de Server Components para rendimiento máximo y SEO (vital para el marketplace).
+- **Estilizado:** **Vanilla CSS / CSS Modules**. Se evita Tailwind CSS para mantener un control total sobre el diseño "premium" y evitar deuda técnica estética a largo plazo.
 
-### Backend & Base de Datos
-- **Supabase** (PostgreSQL gestionado + Auth + Storage + Row Level Security).
-- Tablas principales: `clients`, `quotations`, `orders`, `products`, `vendors`, `marketplace_listings`, `events_audit`.
-- Auth con verificación de email + opcional verificación CUIT vía padrón AFIP.
+### Backend-as-a-Service: Supabase (PostgreSQL)
+- **PostgreSQL:** Base de datos relacional robusta para gestionar pedidos, usuarios y cotizaciones.
+- **Auth & RLS:** Gestión nativa de usuarios y reglas de seguridad a nivel de fila (Row Level Security) para aislar datos entre particulares, mayoristas y vendedores.
+- **Edge Functions:** Para lógica ligera que debe ejecutarse cerca del usuario.
 
-### Microservicio cotizador
-- **Node.js o Python** sobre **Railway / Fly.io**.
-- Responsable del cálculo del Cotizador Híbrido (NCM + peso volumétrico + cobertura cambiaria + spread arancelario).
-- Integración con APIs oficiales de proveedores (Amazon Product Advertising API, eBay Browse API, AliExpress Open Platform).
-- Endpoint stateless, fácil de escalar horizontalmente.
-
-### Pagos
-- **Mercado Pago** (Argentina, particulares y vendedores del marketplace).
-- **Stripe** (B2B internacional, cobro de fees logísticos a mayoristas).
-- **Wise / Lemon Cash** (cripto-pasarelas para liquidación T+0 de cobertura cambiaria).
-
-### Tracking y comunicación
-- **AfterShip** plan inicial para tracking internacional (~$11 USD/mes inicial).
-- **WhatsApp Business API** vía Twilio o Meta Cloud API (~$20-50 USD/mes inicial).
-
-### Costo Fase 1: ~$200-350 USD/mes
-
-| Concepto | Costo mensual |
-|---|---|
-| Vercel Pro | $20 USD |
-| Supabase Pro | $25 USD |
-| Railway / Fly.io (microservicio) | $20-50 USD |
-| AfterShip | $11 USD |
-| WhatsApp Business API | $20-50 USD |
-| Mercado Pago / Stripe | % variable, no fijo |
-| Dominio + Workspace | $15 USD |
-| Sentry / observabilidad básica | $20 USD |
-| **Subtotal Fase 1** | **~$130-190 USD fijos** |
-
-(El resto es variable y depende de volumen.)
+### Orquestación de Flujos: Next.js API Routes + Inngest
+- **API Routes:** Para la lógica del Cotizador Híbrido y procesamiento de pagos.
+- **Inngest (Clave):** Dado que un proceso de importación dura entre 15 y 45 días, se requiere un orquestador de flujos de larga duración. Inngest permite programar lógica que "duerme" y se activa ante eventos (ej. "si el flete no cambió de estado en 7 días, disparar alerta").
 
 ---
 
-## Stack Fase 2 (Marketplace consolidado — meses 6-12)
+## 2. Infraestructura y Despliegue
 
-Se suman:
-- **Cache layer:** **Upstash Redis** para cotizaciones recurrentes y catálogo curado.
-- **Observabilidad:** **Sentry** + **BetterStack** para métricas, logs y alertas.
-- **ERP de stock para vendedores:** módulo construido sobre Supabase + Next.js. Vendedores cargan productos, reciben alertas de stock bajo, conectan al cotizador integrado para reposición.
-- **Bot de WhatsApp** para gestión rápida de inventario por parte de vendedores.
-
-### Costo Fase 2: ~$350-600 USD/mes
-
-| Concepto adicional | Costo mensual |
-|---|---|
-| Upstash Redis | $10-30 USD |
-| Sentry + BetterStack | $50 USD |
-| Mailgun / Resend (transaccionales) | $20-50 USD |
-| Plan Vercel/Supabase escalado | +$50-100 USD |
-| **Subtotal Fase 2 (sumado a Fase 1)** | **~$350-500 USD** |
-
----
-
-## Stack Fase 3 (Lotes de Demanda — meses 12-24, condicional)
-
-El stack base **no resuelve** consolidación algorítmica de pedidos en lotes virtuales. Se agrega:
-
-### Worker de optimización
-- **Microservicio Python** (FastAPI + OR-Tools / Pyomo) sobre Railway o AWS ECS.
-- Resuelve bin-packing multi-dimensional con restricciones aduaneras.
-- Decide cuándo cerrar un lote (trade-off entre tiempo de espera del cliente y eficiencia logística).
-
-### Cola de eventos / orquestador
-- **Inngest, Trigger.dev o Temporal** para state machines y workflows de larga duración (días-semanas).
-- Edge Functions de Supabase tienen timeout de 25s — insuficientes para workflows largos.
-
-### Event sourcing inmutable
-- Tabla `events_audit` append-only en Postgres con hash encadenado.
-- Defensa legal ante eventual fiscalización AFIP / Aduana.
-- Migración a **Materialize / ClickHouse** si volumen sube > 1M eventos/mes.
-
-### Costo adicional Fase 3: +$200-500 USD/mes
-
-| Concepto | Costo mensual |
-|---|---|
-| Worker Python (Railway/ECS) | $50-150 USD |
-| Inngest / Trigger.dev | $20-100 USD |
-| Cache adicional + escala BD | $50-150 USD |
-| Almacenamiento de eventos | $20-100 USD |
-| **Subtotal adicional Fase 3** | **~$140-500 USD** |
-
----
-
-## Resumen de costos infra escalonados
-
-| Fase | Burn-rate infra | Componentes principales |
+| Componente | Proveedor | Justificación |
 |---|---|---|
-| Fase 1 (MVP cotizador + tienda) | ~$200-350 USD/mes | Vercel + Supabase + microservicio + APIs |
-| Fase 2 (marketplace + ERP) | ~$350-600 USD/mes | + cache + observabilidad + ERP vendedores |
-| Fase 3 (Lotes de Demanda) | ~$550-1.100 USD/mes | + worker Python + cola + event sourcing |
-
-**El costo de infra no es el problema.** Lo importante es que el stack **soporte la lógica de negocio sin obligar a reescribir** cuando crezca el volumen.
-
----
-
-## Modelo de datos clave
-
-### `clients`
-```
-id, email, name, phone, document_type, document_number,
-client_type (individual | wholesale),
-afip_status (verified | pending | not_required),
-courier_quota_used, courier_quota_year,
-created_at, updated_at
-```
-
-### `quotations`
-```
-id, client_id, status,
-product_link, product_title, product_origin_country,
-weight_declared, dimensions (jsonb), volumetric_weight, billable_weight,
-ncm_category, value_origin_usd, quantity,
-calculated_fee_usd, total_usd, total_ars, exchange_rate_used, exchange_spread,
-expires_at, created_at, confirmed_at, paid_at,
-manual_review_required (bool),
-manual_review_status (pending | approved | rejected | adjusted)
-```
-
-### `orders` (post-cotización confirmada)
-```
-id, quotation_id, client_id,
-status (pending_payment | paid | in_origin | in_transit | in_customs | delivered | cancelled),
-tracking_provider, tracking_number, tracking_url,
-estimated_delivery, actual_delivery,
-margin_real_usd (auditoría post-envío)
-```
-
-### `marketplace_listings`
-```
-id, vendor_id, title, description, category, price_ars,
-stock, status, commission_rate (8-12%),
-sold_count, refund_count, fraud_flag
-```
-
-### `events_audit` (append-only, immutable)
-```
-id, event_type, entity_type, entity_id,
-actor_id, payload (jsonb), hash_prev, hash_self,
-timestamp
-```
+| **Hosting & Edge** | **Vercel** | Despliegue atómico, CDN global y excelente integración con Next.js. |
+| **Base de Datos** | **Supabase** | Backend completo, Postgres gestionado y escalabilidad elástica. |
+| **Workflows** | **Inngest** | Gestión de procesos asincrónicos y de larga duración (importación). |
+| **Cache** | **Upstash Redis** | Cache de baja latencia para cotizaciones frecuentes y catálogo curado. |
 
 ---
 
-## Seguridad
+## 3. Integraciones Críticas (Ecosistema)
 
-- **PCI-DSS:** la plataforma **nunca** almacena datos de tarjeta. Tokenización delegada a Mercado Pago / Stripe.
-- **PDPA / Ley 25.326:** datos de cliente cifrados en reposo (Postgres native + Supabase Vault) y en tránsito (TLS 1.3).
-- **Row Level Security (RLS)** en todas las tablas de Supabase para aislar datos por usuario.
-- **Logs forenses inmutables** con hash encadenado (event sourcing).
-- **Retención mínima:** 5 años (cumplimiento aduanero).
-- **Backups automáticos** diarios con retención 30 días.
+### Pagos y Finanzas
+- **Mercado Pago API:** Split payment para el marketplace y cobros locales en Argentina.
+- **Stripe:** Cobro de fees logísticos a mayoristas internacionales.
+- **Binance / Bitso / Lemon API:** Consulta de cotización USDT/USDC en tiempo real para asegurar la **Cobertura Cambiaria T+0**.
 
----
-
-## Escalabilidad ante picos virales
-
-- Catálogos públicos en CDN (Vercel Edge / Cloudflare) — viralidad no toca la BD.
-- Rate limiting + cache Redis en endpoints de cotización (cotizador es endpoint costoso).
-- Webhooks de tracking → ingestión a cola, no escritura directa a BD; consolidación batch cada 5-15 min.
-- Smart Routing dinámico (Miami / Shanghai / SP) — el sistema cambia rutas en tiempo real según restricciones aduaneras detectadas, cupo Courier remanente y costo logístico instantáneo.
+### Logística y Comunicación
+- **AfterShip API:** Tracking unificado de 900+ couriers internacionales.
+- **WhatsApp Business API (vía Twilio/Meta):** Notificaciones críticas y soporte prioritario para mayoristas.
+- **Resend / Mailgun:** Email transaccional con alta entregabilidad.
 
 ---
 
-## APIs y servicios externos
+## 4. Evolución de la Arquitectura (Fases)
 
-| Servicio | Propósito | Plan inicial |
-|---|---|---|
-| Amazon Product Advertising API | Extracción de datos de productos Amazon | Gratis hasta volumen, requiere aprobación |
-| eBay Browse API | Extracción de datos de productos eBay | Gratis hasta volumen |
-| AliExpress Open Platform | Extracción de datos de productos AliExpress | Gratis hasta volumen |
-| AFIP Padrón A4/A5 | Validación CUIT + condición fiscal | Gratis (webservice oficial) |
-| AfterShip | Tracking internacional | $11-50 USD/mes |
-| Mercado Pago | Pagos locales (split payment) | % variable |
-| Stripe | Pagos B2B internacionales | % variable |
-| Wise / Lemon Cash / Binance | Liquidación T+0 USDT/USDC | % variable |
-| WhatsApp Business API | Soporte y notificaciones | $20-100 USD/mes |
-| Resend / Mailgun | Email transaccional | $20-50 USD/mes |
+### Fase 1 (MVP - Digitalización)
+- Foco: Cotizador Híbrido + Checkout + Tracking básico.
+- Costo infra: **~$0 - $50 USD/mes** (usando tiers gratuitos de Vercel y Supabase).
 
-**Plan B obligatorio:** las APIs oficiales (Amazon en particular) requieren aprobación previa que puede tardar o ser rechazada. Diseñar el cotizador para soportar **captura manual de datos por el cliente** desde el día 1, sin asumir que las APIs estarán disponibles. Si están, mejor; si no, el flujo no se rompe.
+### Fase 2 (Escala B2B y Marketplace)
+- Foco: Panel de Vendedores + ERP de Stock + Panel Mayorista.
+- Incorporación de **Inngest** para flujos de cobro y seguimiento de 45 días.
+- Costo infra: **~$150 - $300 USD/mes**.
+
+### Fase 3 (Optimización Algorítmica)
+- Foco: Lotes de Demanda (Bin-packing).
+- Incorporación de un microservicio en **Python (FastAPI)** solo si la complejidad de optimización matemática lo requiere.
 
 ---
 
-## Próximas lecturas
+## 5. Seguridad y Compliance Técnico
 
-- [02 — Producto Cotizador](02-producto-cotizador.md): la lógica de negocio que corre sobre este stack.
-- [09 — Plan de Lanzamiento](09-plan-lanzamiento.md): qué se construye en cada fase.
-- [11 — Equipo y Operaciones](11-equipo-y-operaciones.md): qué roles soportan este stack.
+1. **Cero persistencia de tarjetas:** Delegación total a pasarelas (PCI-DSS compliance).
+2. **Logs forenses:** Cada cambio de estado en una cotización genera un evento inmutable en Supabase.
+3. **Variables de Entorno (Secrets):** Gestión estricta vía Vercel/Supabase Vault; nunca en el repositorio.
+4. **Auditoría de Margen:** Middleware que compara el `calculated_fee` con el `actual_cost` post-despacho y genera alertas automáticas.
+
+---
+
+## 6. North Star Técnica
+
+> **"Un sistema que se estira ante el tráfico, pero no cuesta nada cuando el founder duerme."**
+
+Este stack permite al proyecto Anti-ML competir en tecnología con gigantes como Tiendamia, operando con una fracción ínfima de su presupuesto de ingeniería.
