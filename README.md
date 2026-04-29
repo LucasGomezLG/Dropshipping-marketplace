@@ -2,6 +2,7 @@
 layout: default
 title: "Plataforma Cotizador + Marketplace + Dropshipping"
 nav_order: 1
+permalink: /
 ---
 
 # Plataforma Cotizador + Marketplace + Dropshipping
