@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Clientes Dual Mode: Particular vs Tienda Mayorista"
+nav_order: 7
+---
+
 # 05 — Clientes Dual Mode: Particular vs Tienda Mayorista
 
 > **Documento parte de:** [Plataforma Cotizador + Marketplace + Dropshipping](../README.md)

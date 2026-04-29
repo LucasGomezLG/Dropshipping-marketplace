@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Riesgos y Mitigaciones"
+nav_order: 12
+---
+
 # 10 — Riesgos y Mitigaciones
 
 > **Documento parte de:** [Plataforma Cotizador + Marketplace + Dropshipping](../README.md)

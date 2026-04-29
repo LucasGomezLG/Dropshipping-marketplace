@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Producto: Marketplace con Comisión 8-12%"
+nav_order: 5
+---
+
 # 03 — Producto: Marketplace con Comisión 8-12%
 
 > **Documento parte de:** [Plataforma Cotizador + Marketplace + Dropshipping](../README.md)

@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Adquisición de Mayoristas (Plan B2B)"
+nav_order: 15
+---
+
 # 13 — Adquisición de Mayoristas (Plan B2B)
 
 > **Documento parte de:** [Plataforma Cotizador + Marketplace + Dropshipping](../README.md)

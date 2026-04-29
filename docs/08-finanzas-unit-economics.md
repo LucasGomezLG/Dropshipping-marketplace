@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Finanzas y Unit Economics"
+nav_order: 10
+---
+
 # 08 — Finanzas y Unit Economics
 
 > **Documento parte de:** [Plataforma Cotizador + Marketplace + Dropshipping](../README.md)

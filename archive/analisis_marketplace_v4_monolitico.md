@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Reporte de Viabilidad Técnica y Estratégica: Plataforma Integrada Cotizador + Marketplace + Dropshipping"
+nav_order: 100
+---
+
 # Reporte de Viabilidad Técnica y Estratégica: Plataforma Integrada Cotizador + Marketplace + Dropshipping
 
 **Versión 4.0 — Visión del Founder.**

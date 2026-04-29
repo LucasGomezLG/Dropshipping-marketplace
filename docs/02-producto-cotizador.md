@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Producto: Cotizador Híbrido"
+nav_order: 4
+---
+
 # 02 — Producto: Cotizador Híbrido
 
 > **Documento parte de:** [Plataforma Cotizador + Marketplace + Dropshipping](../README.md)

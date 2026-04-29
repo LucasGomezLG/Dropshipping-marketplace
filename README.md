@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Plataforma Cotizador + Marketplace + Dropshipping"
+nav_order: 1
+---
+
 # Plataforma Cotizador + Marketplace + Dropshipping
 
 > **Versión maestra:** 4.1 — 2026-04-28

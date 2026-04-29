@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Compliance Legal"
+nav_order: 9
+---
+
 # 07 — Compliance Legal
 
 > **Documento parte de:** [Plataforma Cotizador + Marketplace + Dropshipping](../README.md)

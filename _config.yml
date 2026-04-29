@@ -1,25 +1,34 @@
 title: Plataforma Cotizador + Marketplace + Dropshipping
 description: Documentación estratégica y técnica del proyecto. Sistema integrado de cotizador automático, tienda dropshipping pre-cotizada y marketplace local con dual mode particular/mayorista.
-theme: jekyll-theme-cayman
-show_downloads: false
+remote_theme: just-the-docs/just-the-docs
+color_scheme: light
+search_enabled: true
+heading_anchors: true
+
 markdown: kramdown
 kramdown:
   input: GFM
   hard_wrap: false
+
 plugins:
+  - jekyll-remote-theme
   - jekyll-relative-links
-  - jekyll-optional-front-matter
+
 relative_links:
   enabled: true
   collections: true
+
 include:
   - docs
   - archive
+
 exclude:
   - README.md.orig
   - .gitignore
   - node_modules
   - vendor
+  - setup-docs.js
+
 defaults:
   - scope:
       path: ""

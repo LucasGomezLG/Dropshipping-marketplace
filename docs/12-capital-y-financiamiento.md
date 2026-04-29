@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Capital y Financiamiento"
+nav_order: 14
+---
+
 # 12 — Capital y Financiamiento
 
 > **Documento parte de:** [Plataforma Cotizador + Marketplace + Dropshipping](../README.md)

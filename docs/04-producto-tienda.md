@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Producto: Tienda Dropshipping Pre-cotizada"
+nav_order: 6
+---
+
 # 04 — Producto: Tienda Dropshipping Pre-cotizada
 
 > **Documento parte de:** [Plataforma Cotizador + Marketplace + Dropshipping](../README.md)

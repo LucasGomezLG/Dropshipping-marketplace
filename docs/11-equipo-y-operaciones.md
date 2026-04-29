@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Equipo y Operaciones"
+nav_order: 13
+---
+
 # 11 — Equipo y Operaciones
 
 > **Documento parte de:** [Plataforma Cotizador + Marketplace + Dropshipping](../README.md)

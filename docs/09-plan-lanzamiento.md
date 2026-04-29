@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Plan de Lanzamiento (Roadmap Operativo)"
+nav_order: 11
+---
+
 # 09 — Plan de Lanzamiento (Roadmap Operativo)
 
 > **Documento parte de:** [Plataforma Cotizador + Marketplace + Dropshipping](../README.md)

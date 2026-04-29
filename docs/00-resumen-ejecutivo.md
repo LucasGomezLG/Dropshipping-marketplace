@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Resumen Ejecutivo"
+nav_order: 2
+---
+
 # 00 — Resumen Ejecutivo
 
 > **Documento parte de:** [Plataforma Cotizador + Marketplace + Dropshipping](../README.md)

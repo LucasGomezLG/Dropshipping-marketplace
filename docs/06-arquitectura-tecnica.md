@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Arquitectura Técnica"
+nav_order: 8
+---
+
 # 06 — Arquitectura Técnica
 
 > **Documento parte de:** [Plataforma Cotizador + Marketplace + Dropshipping](../README.md)

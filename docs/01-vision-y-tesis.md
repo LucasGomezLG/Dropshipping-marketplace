@@ -1,3 +1,9 @@
+---
+layout: default
+title: "Visión y Tesis"
+nav_order: 3
+---
+
 # 01 — Visión y Tesis
 
 > **Documento parte de:** [Plataforma Cotizador + Marketplace + Dropshipping](../README.md)
