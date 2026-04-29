@@ -34,7 +34,8 @@ permalink: /
 │   ├── 10-riesgos-y-mitigaciones.md    ← Top 3 + macro + regulatorio + no nombrados
 │   ├── 11-equipo-y-operaciones.md      ← Roles, burn rate, soporte dual
 │   ├── 12-capital-y-financiamiento.md  ← $15-30k semilla + hitos Pre-Seed
-│   └── 13-adquisicion-mayoristas.md    ← Plan B2B operativo
+│   ├── 13-adquisicion-mayoristas.md    ← Plan B2B operativo
+│   └── 14-pitch-empresas.md            ← Propuesta comercial para empresas
 └── archive/
     └── analisis_marketplace_v4_monolitico.md   ← Backup consolidado del documento original
 ```
@@ -70,6 +71,7 @@ Leer en orden 00 → 13.
 1. [00 — Resumen Ejecutivo](docs/00-resumen-ejecutivo.md)
 2. [05 — Clientes Dual Mode](docs/05-clientes-dual-mode.md)
 3. [13 — Adquisición de Mayoristas](docs/13-adquisicion-mayoristas.md)
+4. [14 — Propuesta B2B a Empresas](docs/14-pitch-empresas.md)
 
 ---
 
